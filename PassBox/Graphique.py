@@ -8,11 +8,6 @@ def click_n():
 
 def click_c():
 
-    def crypte_path():
-        iftrue + 1
-        Tk().withdraw()
-        filename = askopenfilename()
-
     def crypte_exit():
         crypte.destroy()
 
