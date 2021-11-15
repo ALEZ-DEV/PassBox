@@ -3,8 +3,6 @@ from tkinter import *
 from functools import partial
 from tkinter.filedialog import askopenfile, askopenfilename
 
-iftrue = 0
-
 def click_n():
     exit()
 
