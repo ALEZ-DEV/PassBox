@@ -1,6 +1,7 @@
 from cryptography.fernet import Fernet
 import os
 import base64
+import csv
 
 keepedKey = ""
 oneKeyKeeped = False
@@ -76,6 +77,20 @@ def __menu__() :
         elif (command == "np") :
             isChoosed = False
             
+            print("do you want to use keeped key ? | yes : y | no : n")
+            getKey = input("--")           
+            if (getKey == "n") :
+                print("Enter your key :")
+                fileKey = input("--")
+            else :
+                fileKey = keepedKey
+            
+            print("Enter the name of your file :")
+            name = input("--")
+            
+            __createPassList__(fileKey, name)
+            __menu__()
+            
         elif (command == "op") :
             isChoosed = False
             
@@ -120,6 +135,40 @@ def __decryptFile__(data, decrypteKey) :
     
     with open(savePath, "wb") as file :
         file.write(decryptedFile)
+        
+def __createPassList__(encrypteKey, nameFile) :
+    
+    fkey = Fernet(bytes(encrypteKey, "utf-8"))
+    isFinished = True
+    numLoop = 0
+    listOfPassword = []
+
+    while(isFinished) :
+        numLoop += 1
+        print(f"the name of the password {numLoop}")
+        name = input("--")
+        print("the password")
+        password = input("--")
+        
+        fisrtList= [name, password]
+        listOfPassword.append(fisrtList)
+        
+        print("do you want to add more ? | yes : y | no : n")
+        add = input("--")
+        if(add == "n"):
+            isFinished = False
+        
+    cryptedFile = fkey.encrypt()
+    with open(f"%USERPROFILE%\douments\PassBox\{nameFile}.csv", "wb", newline="") as file :
+        csv_writer = csv.writer(file, delimiter=",")
+        
+        for i in range(len(listOfPassword)) :
+            
+            data = listOfPassword[i]
+            csv_writer.writerow(data)
+    
+    print("the list is created")
+
     
 __menu__()
 print("Programme finished")
