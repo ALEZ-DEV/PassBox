@@ -2,95 +2,21 @@ from cryptography.fernet import Fernet
 import os
 import base64
 import csv
+"""
+all command usable :
+__newKey__ : generate a new key / return string   
+__encrypteFile__ : encrypte any type file / parameter : data (message), encrypteKey (key), path / return None
+__decrypteFile__ : decrypte any type file / parameter : data (message), decrypteKey (key), path / return None
+__createList__ : create list in .pbl file / parameter : name / return the path of the file in string
+__addList__ : add element in a list / parameter : path, key, name, data(the password) / return None
+__getList__ : get element of a list and crypted list / parameter : path, decrypteKey (key), / return the all element in table list
+__encrypteList__ : encrypte list in .pbl file / path, encrypteKey (key), passwordList(the all list of password) / return None
 
+"""
 keepedKey = ""
 oneKeyKeeped = False
 fileName = ""
-
-#def __menu__() :
-#
-#    isChoosed = True
-#    turn = 0
-#    
-#    while(isChoosed) :
-#        
-#        if (turn == 0) :
-#                print("what do you want to do :")
-#                print("n : create a new key (not recommanded if is already created)")
-#                print("c : crypte anything file")
-#                print("d : decrypte txt file")
-#                print("np : create a new password list")
-#                print("op : open password list")  
-#                turn += 1     
-#        
-#        command = input("--")
-#        if (command == "n") :
-#            isChoosed = False
-#            __newKey__()
-#            __menu__()
-#            
-#        elif (command == "c") :
-#            isChoosed = False
-#            print("do you want to generate a new key ? | yes : y | no : n")
-#            newOne = input("--")
-#            
-#            if (newOne == "n") :
-#                print("do you want to use keeped key ? | yes : y | no : n")
-#                getKey = input("--")           
-#                if (getKey == "n") :
-#                    print("Enter your key :")
-#                    fileKey = input("--")
-#                else :
-#                    fileKey = keepedKey
-#            else :
-#                fileKey =  __newKey__()
-#            
-#            print("Enter the path of your file :")
-#            path = input("--")
-#            
-#            __encrypteFile__(path, fileKey)
-#            __menu__()
-#            
-#        elif (command == "d") :
-#            isChoosed = False
-#            
-#            print("do you want to use keeped key ? | yes : y | no : n")
-#            getKey = input("--")           
-#            if (getKey == "n") :
-#                print("Enter your key :")
-#                fileKey = input("--")
-#            else :
-#                fileKey = keepedKey
-#            
-#            print("Enter the path of your file :")
-#            path = input("--")
-#            
-#            __decryptFile__(path, fileKey)
-#            
-#        elif (command == "np") :
-#            isChoosed = False
-#            
-#            print("do you want to use keeped key ? | yes : y | no : n")
-#            getKey = input("--")           
-#            if (getKey == "n") :
-#                print("Enter your key :")
-#                fileKey = input("--")
-#            else :
-#                fileKey = keepedKey
-#            
-#            print("Enter the name of your file :")
-#            name = input("--")
-#            
-#            __createPassList__(fileKey, name)
-#            __menu__()
-#            
-#        elif (command == "op") :
-#            isChoosed = False
-#            
-#        else :
-#            print("this command is not valid")
-#            isChoosed = True
-#            
+    
 def __newKey__() :
     
     key = Fernet.generate_key()
@@ -117,6 +43,8 @@ def __decryptFile__(data, decrypteKey, path) :
     
     with open(path, "wb") as file :
         file.write(decryptedFile)
+
+
         
 def __createList__(name) :
 
