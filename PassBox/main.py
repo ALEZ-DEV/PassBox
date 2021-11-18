@@ -31,7 +31,7 @@ def __newKey__() :
     
 def __encrypteFile__(filePath, encrypteKey, path) :
     
-    fKey = Fernet(encrypteKey, "utf-8")
+    fKey = Fernet(bytes(encrypteKey, "utf-8"))
     
     readFile = open(filePath, "rb").read()
     cryptedFile = fKey.encrypt(readFile)
@@ -154,20 +154,22 @@ def click_c():
     label_crypted_path = Label(crypte, text="Please enter the path of your crypted text")
     entry_crypted_path = Entry(crypte, width=60)
     entry_get_file = Entry(crypte, width=60)
-    Button_crypte = Button(crypte, text="Crypte your text", command=__encrypteFile__())
-
+    button_crypte = Button(crypte, text="crypte")
+    
     label_path.grid(column=0, row=0)
     button_path.grid(column=0, row=1)
     label_key.grid(column=0, row=2)
     entry_key.grid(column=0, row=3)
     button_enter.grid(column=1, row=3)
     button_random_key.grid(column=2, row=3)
-    Button_crypte.grid(column=0, row=4)
+    button_crypte.grid(column=0, row=4)
     entry_get_file.grid(column=0, row=5)
     button_exit.grid(column=0, row=6)
-
+    
+    button_crypte["command"] = command=print("%USERPROFILE%\\documents\\PassBox.txt")
+    #__encrypteFile__(entry_get_file.get(), entry_key.get(), "%USERPROFILE%\\documents\\PassBox.txt"
+    
     crypte.mainloop()
-
 
 def click_d():
     exit()
@@ -180,29 +182,30 @@ def click_op():
 
 def click_exit():
     exit()
+def menu() :
+    main = Tk()
 
-main = Tk()
+    main.geometry("500x300")
 
-main.geometry("500x300")
+    main.title("PassBox")
 
-main.title("PassBox")
+    what = Label(main, text = "what do you want to do :")
+    button_n = Button(main, text="n : create a new key (not recommanded if is already created)", command=click_n)
+    button_c = Button(main, text="c : crypte anything file", command=click_c)
+    button_d = Button(main, text="d : decrypte txt file", command=click_d)
+    button_np = Button(main, text="np : create a new password list", command=click_np)
+    button_op = Button(main, text="op : open password list", command=click_op)
+    button_exit = Button(main, text="Exit", command=click_exit)
 
-what = Label(main, text = "what do you want to do :")
-button_n = Button(main, text="n : create a new key (not recommanded if is already created)", command=click_n)
-button_c = Button(main, text="c : crypte anything file", command=click_c)
-button_d = Button(main, text="d : decrypte txt file", command=click_d)
-button_np = Button(main, text="np : create a new password list", command=click_np)
-button_op = Button(main, text="op : open password list", command=click_op)
-button_exit = Button(main, text="Exit", command=click_exit)
+    what.grid(column=0, row=0)
+    button_n.grid(column=0, row=1)
+    button_c.grid(column=0, row=2)
+    button_d.grid(column=0, row=3)
+    button_np.grid(column=0, row=4)
+    button_op.grid(column=0, row=5)
+    button_exit.grid(column=0, row=6)
 
-what.grid(column=0, row=0)
-button_n.grid(column=0, row=1)
-button_c.grid(column=0, row=2)
-button_d.grid(column=0, row=3)
-button_np.grid(column=0, row=4)
-button_op.grid(column=0, row=5)
-button_exit.grid(column=0, row=6)
+    main.mainloop()
 
-main.mainloop()
-
+menu()
 print("Programme finished")
