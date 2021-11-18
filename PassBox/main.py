@@ -1,7 +1,12 @@
+from os import name
+from tkinter import *
+from functools import partial
+from tkinter.filedialog import askopenfile, askopenfilename
 from cryptography.fernet import Fernet
 import os
 import base64
 import csv
+
 """
 all command usable :
 __newKey__ : generate a new key / return string   
@@ -24,15 +29,15 @@ def __newKey__() :
     
     return key
     
-def __encrypteFile__(data, encrypteKey, path) :
+def __encrypteFile__(filePath, encrypteKey, path) :
     
-    fKey = Fernet(bytes(encrypteKey, "utf-8"))
+    fKey = Fernet(encrypteKey, "utf-8")
     
-    readFile = open(data, "rb").read()
+    readFile = open(filePath, "rb").read()
     cryptedFile = fKey.encrypt(readFile)
     
     with open(path, "wb") as file :
-        file.write(cryptedFile)
+        file.write(bytes(cryptedFile))
 
 def __decryptFile__(data, decrypteKey, path) :
     
@@ -44,7 +49,10 @@ def __decryptFile__(data, decrypteKey, path) :
     with open(path, "wb") as file :
         file.write(decryptedFile)
 
-
+def __replaceBytes__(data) :
+    data.replace("b","")
+    data.replace("'","")
+    return data
         
 def __createList__(name) :
 
@@ -103,7 +111,98 @@ def __encrypteList__(path, encrypteKey, passwordList) :
         for i in data :
             csv_writer.writerow(i)
 
-print("Programme finished")
+def click_n():
+    exit()
 
-# the password file is in .pbl (.Pass Box List)
-#b'CZ51unnhvsGfVWvtP3Xg00Y-Attv-D-OsE7MjfKnegY='
+def click_c():
+
+    
+    def crypte_path():
+        filenamepath = askopenfilename()
+        return filenamepath
+
+    def crypte_exit():
+        crypte.destroy()
+
+    key = ""
+    def crypte_enter():
+        text = entry_key.get()
+        return text
+
+    def set_text() :
+        random_key = __newKey__()
+        entry_key.delete(0, END)
+        entry_key.insert(0, random_key)
+
+    def __crypted_path__():
+        crypted_path = entry_crypted_path.get()
+        return crypted_path
+
+
+
+
+    crypte = Tk()
+    crypte.geometry("500x300")
+    crypte.title("Crypte")
+    label_path = Label(crypte, text="Please select the path")
+    button_path = Button(crypte, text="Click", command=crypte_path)
+    button_exit = Button(crypte, text="Exit" ,command=crypte_exit)
+    label_key = Label(crypte, text="Enter a key to crypte your text")
+    entry_key = Entry(crypte, width=60)
+    button_enter = Button(crypte, text="Enter", command=crypte_enter)
+    button_random_key = Button(crypte, text="Random", command=set_text)
+    label_crypted_path = Label(crypte, text="Please enter the path of your crypted text")
+    entry_crypted_path = Entry(crypte, width=60)
+    entry_get_file = Entry(crypte, width=60)
+    Button_crypte = Button(crypte, text="Crypte your text", command=__encrypteFile__())
+
+    label_path.grid(column=0, row=0)
+    button_path.grid(column=0, row=1)
+    label_key.grid(column=0, row=2)
+    entry_key.grid(column=0, row=3)
+    button_enter.grid(column=1, row=3)
+    button_random_key.grid(column=2, row=3)
+    Button_crypte.grid(column=0, row=4)
+    entry_get_file.grid(column=0, row=5)
+    button_exit.grid(column=0, row=6)
+
+    crypte.mainloop()
+
+
+def click_d():
+    exit()
+
+def click_np():
+    exit()
+
+def click_op():
+    exit()
+
+def click_exit():
+    exit()
+
+main = Tk()
+
+main.geometry("500x300")
+
+main.title("PassBox")
+
+what = Label(main, text = "what do you want to do :")
+button_n = Button(main, text="n : create a new key (not recommanded if is already created)", command=click_n)
+button_c = Button(main, text="c : crypte anything file", command=click_c)
+button_d = Button(main, text="d : decrypte txt file", command=click_d)
+button_np = Button(main, text="np : create a new password list", command=click_np)
+button_op = Button(main, text="op : open password list", command=click_op)
+button_exit = Button(main, text="Exit", command=click_exit)
+
+what.grid(column=0, row=0)
+button_n.grid(column=0, row=1)
+button_c.grid(column=0, row=2)
+button_d.grid(column=0, row=3)
+button_np.grid(column=0, row=4)
+button_op.grid(column=0, row=5)
+button_exit.grid(column=0, row=6)
+
+main.mainloop()
+
+print("Programme finished")
