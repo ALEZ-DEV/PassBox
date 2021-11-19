@@ -1,11 +1,15 @@
 from os import name
 from tkinter import *
 from functools import partial
+import tkinter
 from tkinter.filedialog import askopenfile, askopenfilename
 from cryptography.fernet import Fernet
 import os
 import base64
 import csv
+
+userProfile = os.environ['USERPROFILE']
+userDocuments = userProfile + "\\Documents\\"
 
 """
 all command usable :
@@ -111,101 +115,129 @@ def __encrypteList__(path, encrypteKey, passwordList) :
         for i in data :
             csv_writer.writerow(i)
 
-def click_n():
-    exit()
 
-def click_c():
 
+def __crypte__() :
     
-    def crypte_path():
-        filenamepath = askopenfilename()
-        return filenamepath
-
-    def crypte_exit():
-        crypte.destroy()
-
-    key = ""
-    def crypte_enter():
-        text = entry_key.get()
-        return text
-
-    def set_text() :
-        random_key = __newKey__()
+    def __getPath__() :
+        path = askopenfile()
+        entry_path.delete(0, END)
+        entry_path.insert(0, path.name)
+        
+    def __generateKey__() :
+        key = __newKey__()
         entry_key.delete(0, END)
-        entry_key.insert(0, random_key)
-
-    def __crypted_path__():
-        crypted_path = entry_crypted_path.get()
-        return crypted_path
-
-
-
-
+        entry_key.insert(0, key)
+        
+    def __crypte__() :
+        filePath = entry_path.get()
+        key = entry_key.get()
+        path = userDocuments + "text.txt"
+        __encrypteFile__(filePath, key, path)
+    
     crypte = Tk()
+    
     crypte.geometry("500x300")
-    crypte.title("Crypte")
-    label_path = Label(crypte, text="Please select the path")
-    button_path = Button(crypte, text="Click", command=crypte_path)
-    button_exit = Button(crypte, text="Exit" ,command=crypte_exit)
-    label_key = Label(crypte, text="Enter a key to crypte your text")
-    entry_key = Entry(crypte, width=60)
-    button_enter = Button(crypte, text="Enter", command=crypte_enter)
-    button_random_key = Button(crypte, text="Random", command=set_text)
-    label_crypted_path = Label(crypte, text="Please enter the path of your crypted text")
-    entry_crypted_path = Entry(crypte, width=60)
-    entry_get_file = Entry(crypte, width=60)
-    button_crypte = Button(crypte, text="crypte")
     
-    label_path.grid(column=0, row=0)
-    button_path.grid(column=0, row=1)
-    label_key.grid(column=0, row=2)
-    entry_key.grid(column=0, row=3)
-    button_enter.grid(column=1, row=3)
-    button_random_key.grid(column=2, row=3)
-    button_crypte.grid(column=0, row=4)
-    entry_get_file.grid(column=0, row=5)
-    button_exit.grid(column=0, row=6)
+    crypte.title("PassBox : Crypte")
     
-    button_crypte["command"] = command=print("%USERPROFILE%\\documents\\PassBox.txt")
-    #__encrypteFile__(entry_get_file.get(), entry_key.get(), "%USERPROFILE%\\documents\\PassBox.txt"
+    text_path = Label(crypte, text="enter the path", width=10)
+    entry_path = Entry(crypte,width=50)
+    button_getFilePath = Button(crypte, text="...", width=15, command=__getPath__)
+    
+    text_path.grid(column=0, row=1)
+    entry_path.grid(column=1, row=1)
+    button_getFilePath.grid(column=2, row=1)
+    
+    text_key = Label(crypte, text="enter key", width=10)
+    entry_key = Entry(crypte, width=50)
+    button_generateKey = Button(crypte, text="generate", width=15, command=__generateKey__)
+    
+    text_key.grid(column=0, row=2)
+    entry_key.grid(column=1, row=2)
+    button_generateKey.grid(column=2, row=2)
+    
+    button_crypte = Button(crypte, text="crypte", width=10, command=__crypte__)
+    
+    button_crypte.grid(column=1, row=3)
     
     crypte.mainloop()
 
-def click_d():
+def __decrypte__() :
+    
+    def __getPath__() :
+        path = askopenfile()
+        entry_path.delete(0, END)
+        entry_path.insert(0, path.name)
+        
+    def __generateKey__() :
+        key = __newKey__()
+        entry_key.delete(0, END)
+        entry_key.insert(0, key)
+        
+    def __decrypte__() :
+        filePath = entry_path.get()
+        key = entry_key.get()
+        path = userDocuments + "text.txt"
+        __decryptFile__(filePath, key, path)
+    
+    decrypte = Tk()
+    
+    decrypte.geometry("500x300")
+    
+    decrypte.title("PassBox : Decrypte")
+    
+    text_path = Label(decrypte, text="enter the path", width=10)
+    entry_path = Entry(decrypte,width=50)
+    button_getFilePath = Button(decrypte, text="...", width=15, command=__getPath__)
+    
+    text_path.grid(column=0, row=1)
+    entry_path.grid(column=1, row=1)
+    button_getFilePath.grid(column=2, row=1)
+    
+    text_key = Label(decrypte, text="enter key", width=10)
+    entry_key = Entry(decrypte, width=50)
+    button_generateKey = Button(decrypte, text="generate", width=15, command=__generateKey__)
+    
+    text_key.grid(column=0, row=2)
+    entry_key.grid(column=1, row=2)
+    button_generateKey.grid(column=2, row=2)
+    
+    button_decrypte = Button(decrypte, text="decrypte", width=10, command=__decrypte__)
+    
+    button_decrypte.grid(column=1, row=3)
+    
+    decrypte.mainloop()
+
+def __passList__() :
+    passList = Tk()
+    
+    passList.geometry("500x300")
+    
+    passList.title("PassBox : PassList")
+
+    
+def __exit__() :
     exit()
 
-def click_np():
-    exit()
-
-def click_op():
-    exit()
-
-def click_exit():
-    exit()
-def menu() :
-    main = Tk()
-
-    main.geometry("500x300")
-
-    main.title("PassBox")
-
-    what = Label(main, text = "what do you want to do :")
-    button_n = Button(main, text="n : create a new key (not recommanded if is already created)", command=click_n)
-    button_c = Button(main, text="c : crypte anything file", command=click_c)
-    button_d = Button(main, text="d : decrypte txt file", command=click_d)
-    button_np = Button(main, text="np : create a new password list", command=click_np)
-    button_op = Button(main, text="op : open password list", command=click_op)
-    button_exit = Button(main, text="Exit", command=click_exit)
-
-    what.grid(column=0, row=0)
-    button_n.grid(column=0, row=1)
-    button_c.grid(column=0, row=2)
-    button_d.grid(column=0, row=3)
-    button_np.grid(column=0, row=4)
-    button_op.grid(column=0, row=5)
-    button_exit.grid(column=0, row=6)
-
-    main.mainloop()
-
-menu()
-print("Programme finished")
+def __init__() :
+    
+    menu = Tk()
+    
+    menu.geometry("500x300")
+    
+    menu.title("PassBox")
+    
+    button_crypte = Button(menu, text="crypte file", command=__crypte__, width=70)
+    button_decrypte = Button(menu, text="decrypte file", command=__decrypte__, width=70)
+    button_passList = Button(menu, text="password list", command=__passList__)
+    button_exit = Button(menu, text="Exit", command=menu.destroy, width=70)
+    
+    button_crypte.grid(column=0, row=1)
+    button_decrypte.grid(column=0, row=2)
+    button_exit.grid(column=0, row=3)
+    
+    menu.mainloop()
+    
+__init__()
+#IbwP6SKQJPMAgF0922lh41NL5gnMQymB-HWnidMincM=
