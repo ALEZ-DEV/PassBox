@@ -76,14 +76,14 @@ def __getList__(path, decrypteKey):
     fKey = Fernet(bytes(decrypteKey, "utf-8"))
     passList = []
 
-    with open("C:\\Users\\cp-21sgr\\Documents\\text.csv", "rb") as fileData:
-        csv_reader = csv.reader(fileData)
+    with open(path, "rb") as fileData:
+        csv_reader = csv.reader(bytes(fileData))
 
-    for i in csv_reader:
-        password = []
-        password.append(fKey.decrypt(i[0]))
-        password.append(fKey.decrypt(i[1]))
-        passList.append(password)
+        for i in csv_reader:
+            password = []
+            password.append(fKey.decrypt(i[0]))
+            password.append(fKey.decrypt(i[1]))
+            passList.append(password)
 
     return passList
 
@@ -274,4 +274,4 @@ def __init__():
 
 
 __init__()
-# IbwP6SKQJPMAgF0922lh41NL5gnMQymB-HWnidMincM=
+# IbwP6SKQJPMAgF0922lh41NL5gnMQymB-HWnidMincM=/k9R5OYqQjIDB6sj855MTC-fuNl5jcaQ9T3O9U7NsxAA=
