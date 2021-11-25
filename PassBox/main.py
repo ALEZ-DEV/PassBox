@@ -10,6 +10,7 @@ import csv
 
 userProfile = os.environ['USERPROFILE']
 userDocuments = userProfile + "\\Documents\\"
+noneList = [["get a password list to show here", "nothing here"]]
 
 """
 all command usable :
@@ -76,13 +77,13 @@ def __getList__(path, decrypteKey):
     fKey = Fernet(bytes(decrypteKey, "utf-8"))
     passList = []
 
-    with open(path, "rb") as fileData:
-        csv_reader = csv.reader(bytes(fileData))
+    with open(path, "rt", encoding="utf8") as fileData:
+        csv_reader = csv.reader(fileData)
 
         for i in csv_reader:
             password = []
-            password.append(fKey.decrypt(i[0]))
-            password.append(fKey.decrypt(i[1]))
+            password.append(fKey.decrypt(bytes(i[0], "utf-8")))
+            password.append(fKey.decrypt(bytes(i[1], "utf-8")))
             passList.append(password)
 
     return passList
@@ -209,6 +210,10 @@ def __passList__(list):
 
     passList.title("PassBox : PassList")
 
+    def __back__() :
+        __init__()
+        passList.destroy
+    
     def __getPath__():
         path = askopenfile()
         entry_path.delete(0, END)
@@ -216,44 +221,53 @@ def __passList__(list):
 
     def __get__():
         list = __getList__(entry_path.get(), entry_key.get())
-        n = 2
+        print(list)
+        passList.destroy
+        __passList__(list)
+    
+    if (list != None) :
+        n = 3
         for i in list :
-            n += 1
-            name = Label(text=str(i[0]))
-            password = Label(text=str(i[1]))
+                n += 1
+                name = Label(passList, text=str(i[0]))
+                password = Label(passList, text=str(i[1]))
 
-            name.grid(column=0, row=n)
-            password.grid(column=1, row=n)
-
+                name.grid(column=0, row=n)
+                password.grid(column=1, row=n)
+    
+    button_back = Button(passList, text="<-- back", width=20, command=__back__)
+    
+    button_back.grid(column=0, row=1)
+    
     text_path = Label(passList, text="enter the path", width=10)
     entry_path = Entry(passList, width=50)
     button_getFilePath = Button(passList, text="...", width=15, command=__getPath__)
 
-    text_path.grid(column=0, row=1)
-    entry_path.grid(column=1, row=1)
-    button_getFilePath.grid(column=2, row=1)
+    text_path.grid(column=0, row=2)
+    entry_path.grid(column=1, row=2)
+    button_getFilePath.grid(column=2, row=2)
     
     text_key = Label(passList, text="enter key", width=10)
     entry_key = Entry(passList, width=50)
 
-    text_key.grid(column=0, row=2)
-    entry_key.grid(column=1, row=2)
+    text_key.grid(column=0, row=3)
+    entry_key.grid(column=1, row=3)
     
     button_get = Button(passList, text="get", width=15, command=__get__)
 
-    button_get.grid(column=2, row=2)
+    button_get.grid(column=2, row=3)
 
     passList.mainloop()
 
-def __test__() :
-    __passList__(None)
-
-def __exit__():
-    exit()
-
-
 def __init__():
-
+    
+    def __exit__():
+        menu.quit()
+        
+    def __list__() :
+        __passList__(noneList)
+        menu.destroy
+    
     menu = Tk()
 
     menu.geometry("500x300")
@@ -262,8 +276,8 @@ def __init__():
 
     button_crypte = Button(menu, text="crypte file", command=__crypte__, width=70)
     button_decrypte = Button(menu, text="decrypte file", command=__decrypte__, width=70)
-    button_passList = Button(menu, text="password list", command=__test__, width=70)
-    button_exit = Button(menu, text="Exit", command=menu.destroy, width=70)
+    button_passList = Button(menu, text="password list", command=__list__, width=70)
+    button_exit = Button(menu, text="Exit", command=__exit__, width=70)
 
     button_crypte.grid(column=0, row=1)
     button_decrypte.grid(column=0, row=2)
@@ -274,4 +288,4 @@ def __init__():
 
 
 __init__()
-# IbwP6SKQJPMAgF0922lh41NL5gnMQymB-HWnidMincM=/k9R5OYqQjIDB6sj855MTC-fuNl5jcaQ9T3O9U7NsxAA=
+# p3JOEt_oS0R3OQSUxIrGh6I5SG74OxY-GwUtmVMtb0Q=
